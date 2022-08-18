@@ -52,8 +52,8 @@ static String url="jdbc:mysql://localhost:3306/onedrive";
 static String username="root";
 static String password="kambok123";
 static float total=0;
-   static float  deposit=0;
-    static float  balance=0;
+static float  deposit=0;
+static float  balance=0;
 
 public static Connection myconnection(){
     Connection con=null;
