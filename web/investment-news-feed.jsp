@@ -500,6 +500,7 @@
                                 <div class="row d-flex justify-content-center">
                                     <div class="col-md-11 p-4">
                                         <div class="owl-carousel owl-theme ">
+                                            <!--TODO: Modify condition to show when there is no ad-->
                                             <%
                                                 for (Ads ads : loanAds) {
                                                     if (ads.getAdsStatus().equals("Pending")) {
