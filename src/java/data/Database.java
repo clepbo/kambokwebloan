@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import model.Address;
 import model.AdminUser;
 import model.Admindetails;
+import model.Ads;
 import model.ApplicantVerification;
 import model.ApproveRequest;
 import model.Bank;
@@ -30,6 +31,7 @@ import model.Departmentinfo;
 import model.ExtensionDetails;
 import model.Finance;
 import model.History;
+import model.Investment;
 import model.LoanAgr;
 import model.LoanDetailSupply;
 import model.LoanDetails;
@@ -2036,6 +2038,7 @@ public static Redeem getRedeemInfo(String trid){
     return us;
 }
 
+
 //sendpayment section
 
 public static int saveSendPayment(MakePayment mk){
@@ -2151,6 +2154,187 @@ public static int saveSendPayment(MakePayment mk){
     return i;
 }
 
+public static List<AdminUser> getStaff(){
+    List<AdminUser> adminUser = new ArrayList<>();
+    try{
+        Connection con = myconnection();
+        String sql = "SELECT * FROM onedrive.adminregister";
+        PreparedStatement ps = con.prepareStatement(sql);
+       
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+           AdminUser adu= new AdminUser(); 
+            adu.setFirstname(rs.getString(1));
+            adu.setLastname(rs.getString(2));
+            adu.setPosition(rs.getString(3));
+            adu.setPhone(rs.getString(4));
+            adu.setEmail(rs.getString(5));
+            adu.setPassword(rs.getString(6));
+            adminUser.add(adu);
+        }
+    }catch(Exception e){}
+    return adminUser;
+}
+
+public static int editStaff(AdminUser adminUser){
+    int i = 0;
+    try{
+        Connection con = myconnection();
+        String sql = "update onedrive.adminregister set position='"+adminUser.getPosition()+"', phone='"+adminUser.getPhone()+"' where email='"+adminUser.getEmail()+"'";
+        String sql2 = "update onedrive.admin set position='"+adminUser.getPosition()+"' where username='"+adminUser.getEmail()+"'";
+        String sql3 = "update onedrive.position set position='"+adminUser.getPosition()+"' where username='"+adminUser.getEmail()+"'";
+        PreparedStatement ps = con.prepareStatement(sql);
+        i=ps.executeUpdate();
+        
+        PreparedStatement ps2 = con.prepareStatement(sql2);
+        i+=ps2.executeUpdate();
+        
+        PreparedStatement ps3 = con.prepareStatement(sql3);
+        i+=ps3.executeUpdate();
+        
+    }catch(Exception e){}
+    
+    return i;
+} 
+
+public static int deleteStaff(AdminUser adminUser){
+    int i=0;
+     try{
+        Connection con = myconnection();
+        String sql = "DELETE FROM onedrive.adminregister where email=?";
+        String sql2 = "DELETE FROM onedrive.admin where username=?";
+        String sql3 = "DELETE FROM onedrive.login where username=?";
+        String sql4 = "DELETE FROM onedrive.position where username=?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, adminUser.getEmail());
+        i=ps.executeUpdate();
+        PreparedStatement ps2 = con.prepareStatement(sql2);
+        ps2.setString(1, adminUser.getEmail());
+        i+=ps2.executeUpdate();
+        PreparedStatement ps3 = con.prepareStatement(sql3);
+        ps3.setString(1, adminUser.getEmail());
+        i+=ps3.executeUpdate();
+        PreparedStatement ps4 = con.prepareStatement(sql4);
+        ps4.setString(1, adminUser.getEmail());
+        i+=ps4.executeUpdate();
+        
+    }catch(Exception e){}
+    return i;
+}
+
+public static AdminUser viewSingleStaff(String email){
+    AdminUser adu= new AdminUser();
+     try{
+        Connection con = myconnection();
+        
+        String sql = "SELECT * FROM onedrive.adminregister WHERE email='"+email+"'";
+        PreparedStatement ps = con.prepareStatement(sql);
+        
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            adu.setFirstname(rs.getString(1));
+            adu.setLastname(rs.getString(2));
+            adu.setPosition(rs.getString(3));
+            adu.setPhone(rs.getString(4));
+            adu.setEmail(rs.getString(5));
+            adu.setPassword(rs.getString(6));
+        }
+    }catch(Exception e){}
+    return adu;
 }
 
 
+public static int LoanAds(Ads ads){
+    int i=0;
+    
+    try{
+       Connection con=myconnection();
+       String sql = "insert into onedrive.loanads values (?,?,?,?,?)";
+       PreparedStatement ps = con.prepareStatement(sql);
+       ps.setString(1, ads.getAdsAmount());
+       ps.setString(2, ads.getDate());
+       ps.setString(3, ads.getAdsID());
+       ps.setString(4, ads.getAdsPackage());
+       ps.setString(5, ads.getAdsStatus());
+       
+       i = ps.executeUpdate();
+    }catch(Exception e){}
+    return i;
+}
+
+public static List<Ads> GetLoanAds(){
+    List<Ads> ads = new ArrayList<>();
+    try{
+    Connection con=myconnection();
+    String sql="select * from onedrive.loanads";
+    PreparedStatement  ps=con.prepareStatement(sql);
+    ResultSet rs=ps.executeQuery();
+    
+    while(rs.next()){
+        Ads ad = new Ads();
+        ad.setAdsAmount(rs.getString(1));
+        ad.setDate(rs.getString(2));
+        ad.setAdsID(rs.getString(3));
+        ad.setAdsPackage(rs.getString(4));
+        ad.setAdsStatus(rs.getString(5));
+        ads.add(ad);
+    }
+    }catch(Exception e){}
+    return ads;
+}
+
+public static Ads GetLoanAdsViaId(String adsId){
+    Ads ads = new Ads();
+    try{
+       Connection con=myconnection(); 
+        String sql1 = "SELECT * FROM onedrive.loanads where ads_id='"+adsId+"'";
+        PreparedStatement ps1 = con.prepareStatement(sql1);
+        ResultSet rs=ps1.executeQuery();
+        while(rs.next()){
+            ads.setAdsAmount(rs.getString(1));
+            ads.setDate(rs.getString(2));
+            ads.setAdsID(rs.getString(3));
+            ads.setAdsPackage(rs.getString(4));
+            ads.setAdsStatus(rs.getString(5));
+        }
+    }catch(Exception e){}
+    return ads;
+}
+
+public static Wallet getWallet(String email){
+    Wallet wallet = new Wallet();
+    try{
+       Connection con=myconnection(); 
+       String sql1 = "SELECT * FROM onedrive.wallet where email='"+email+"'";
+        PreparedStatement ps1 = con.prepareStatement(sql1);
+        ResultSet rs1=ps1.executeQuery();
+        while(rs1.next()){
+            wallet.setEmail(rs1.getString(1));
+            wallet.setAcctno(rs1.getString(2));
+            wallet.setCredit(rs1.getDouble(3));
+            wallet.setDebit(rs1.getDouble(4));
+            wallet.setTotal(rs1.getDouble(5));            
+        }
+    }catch(Exception e){}
+    return wallet;
+}
+
+public static int Investment(Investment invest){
+    int i=0;
+    
+    try{
+       Connection con=myconnection();
+       String sql = "insert into onedrive.investment values (?,?,?,?,?,?)";
+       PreparedStatement ps = con.prepareStatement(sql);
+       ps.setString(1, invest.getEmail());
+       ps.setString(2, invest.getInvestAmt());
+       ps.setString(3, invest.getDate());
+       ps.setString(4, invest.getAdsID());
+       ps.setString(5, invest.getAdsPackage());
+       ps.setString(6, invest.getInvestId());
+       
+       i = ps.executeUpdate();
+    }catch(Exception e){}
+    return i;
+}
+}

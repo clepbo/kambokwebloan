@@ -3,7 +3,7 @@ package model;
 
 
 public class Wallet {
- private String email,sender,date,pin,status;
+ private String email,acctno, sender,date,pin,status;
   private double credit,debit,total,balance;
 
     public double getBalance() {
@@ -87,9 +87,13 @@ public class Wallet {
         this.total = total;
     }
 
-   
+    public String getAcctno() {
+        return acctno;
+    }
 
-   
- 
+    public void setAcctno(String acctno) {
+        this.acctno = acctno;
+    }
+
  
 }
