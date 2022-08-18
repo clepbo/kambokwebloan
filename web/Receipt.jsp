@@ -113,6 +113,8 @@ i{
    
  </head>
 <body>
+	
+<!-- Testing github	 -->
      <script type = "text/javascript" >
           history.pushState(null, null, 'Receipt.jsp');
           window.addEventListener('popstate', function (event) {
