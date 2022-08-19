@@ -52,7 +52,7 @@ public class Database {
 static String name="com.mysql.jdbc.Driver";
 static String url="jdbc:mysql://localhost:3306/onedrive";
 static String username="root";
-static String password="Ab@230596";
+static String password="kambok123";
 static float total=0;
    static float  deposit=0;
     static float  balance=0;
