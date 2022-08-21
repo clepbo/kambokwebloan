@@ -130,6 +130,15 @@ main{
     text-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
+.walletId{
+    background: -webkit-linear-gradient(#066785, #128d6f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.8;
+    font-weight: normal;
+    font-size: 2vmax;
+}
+
 .ledger{
     background: -webkit-linear-gradient(#066785, #128d6f);
     -webkit-background-clip: text;
@@ -341,6 +350,9 @@ main{
     
     
        AdminUser us = (AdminUser)session.getAttribute("staff");
+       Wallet wallet = data.Database.getWallet(us.getEmail());
+       InvestorDetails investorDetails = data.Database.getInvestorDetails(us.getEmail());
+       InvestorDetails investorDetails2 = data.Database.getInvestor(us.getEmail());
       name=us.getFirstname() + " " + us.getLastname();
       position=us.getPosition();
       email=us.getEmail();
@@ -476,14 +488,17 @@ main{
                         <span class="tooltiptext text-info">Terms & Conditions</span>
                         </button>
                     </div>
+                    <div class="col-md-12 d-flex">
+                        <h5 class="text-left walletId">Wallet ID: <input type="text" value="<%=investorDetails2.getWalletId() %>" style="background: transparent; border: none; outline: none; font-weight: bold" id="walletId" name="walletId" readonly="true"></h5>
+                    </div>
                     
                 </div>
                 <div class="row p-2 mx-2">
                     <div class="col">
                         
                         <h5 class="label text-left"> <span></span> Available Balance</h5>
-                        <h1 class="amt text-left"><input type="password" value="₦55,000.00" style="background: transparent; border: none; outline: none; font-weight: bold" id="amt"></h1>
-                        <h3 class="ledger text-left">Ledger Balance:<input type="password" value="₦55,000.00" style="background: transparent; border: none; outline: none; font-weight: normal; -webkit-text-security: asterisk" id="ledger">
+                        <h1 class="amt text-left"><input type="password" value="₦<%=wallet.getTotal()%>" style="background: transparent; border: none; outline: none; font-weight: bold" id="amt" name="amt" readonly="true"></h1>
+                        <h3 class="ledger text-left">Ledger Balance:<input type="password" value="₦<%=wallet.getTotal()%>" style="background: transparent; border: none; outline: none; font-weight: normal; -webkit-text-security: asterisk" id="ledger" readonly="true">
                             <span class="hide-figure d-flex justify-content-start p-2"><i class="fas fa-eye" style="cursor: pointer" id="hide-figure" onclick="toggle()"></i></span>
                         </h3>
                         <script>

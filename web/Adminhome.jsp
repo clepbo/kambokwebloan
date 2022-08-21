@@ -212,6 +212,12 @@ response.setHeader ("Expires", "0"); //prevents caching at the proxy server
           <span class="ml-2">Confirm-payment</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Advertisement.jsp">
+          <i class="fa-solid fa-file-invoice-dollar mx-2"></i>
+          <span class="ml-2">Advertise Loan</span>
+        </a>
+      </li>
     </ul>
 </div>
   

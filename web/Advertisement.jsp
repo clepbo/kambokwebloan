@@ -1,13 +1,12 @@
 <%-- 
-    Document   : dashboard
-    Created on : Jun 20, 2022, 3:18:46 PM
-    Author     : User
+    Document   : Advertisement
+    Created on : Aug 8, 2022, 6:02:20 AM
+    Author     : Depittaz
 --%>
 
-<%@page import="model.Admindetails"%>
-<%@page import="imageloader.Loader"%>
+<%@page import="model.Ads"%>
 <%@page import="java.util.List"%>
-<%@page import="model.LoanRequest"%>
+<%@page import="model.Admindetails"%>
 <%@page import="model.AdminUser"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.Users"%>
@@ -22,9 +21,8 @@
 <META Http-Equiv="Pragma" Content="no-cache">
 <META Http-Equiv="Expires" Content="0">
 
-    <title>ViewRequest</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Advertisement</title>
+ 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
   	  
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
@@ -34,6 +32,10 @@
  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
  <link rel="stylesheet" href="fontawesome-free-6.1.1-web/css/all.css" />
  <link rel="icon" type="image/x-icon" href="kam.png">
+ 
+ <!--table-pagination css.min cdn-->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
   <style>
   
 .sidebar {
@@ -90,20 +92,6 @@ i{
   
   
   </style>
-  
-  <script>
-  function dp(){
-  var tc=document.getElementById("c");
-  var dc=document.getElementById("d");
-  var ec=document.getElementById("e");
-  tc.style.display="inline-block";
-  dc.style.display="block";
-
- tc.style.fontSize="20px";
- ec.style.display="none";
-  }
-  
-  </script>
   <script type="text/javascript">
         function preventBack() { window.history.forward(); }
         
@@ -114,9 +102,9 @@ i{
  </head>
 <body>
      <script type = "text/javascript" >
-          history.pushState(null, null, 'viewrequest.jsp');
+          history.pushState(null, null, 'Advertisement.jsp');
           window.addEventListener('popstate', function (event) {
-              history.pushState(null, null, 'viewrequest.jsp');
+              history.pushState(null, null, 'Advertisement.jsp');
       });
 
      </script>
@@ -127,16 +115,9 @@ response.setHeader("Pragma","no-cache");
 response.setHeader ("Expires", "0"); //prevents caching at the proxy server
 %>
 
-    <%!String name="",position="",email="",pic1="",pic2="";%>
+    <%!String name="",position="",email="";%>
     <%
     ArrayList<Admindetails> us=(ArrayList<Admindetails>)session.getAttribute("admin");
-    
-    pic1=(String)session.getAttribute("pic1");
-    pic2=(String)session.getAttribute("pic2");
-    if((pic1!=" " && pic2!="")&&(pic1!=null && pic2!=null) ){
-        Loader.loadIddelete(pic1, pic2);
-    }
-    
     if(us==null){
      response.sendRedirect("index.jsp");
    }else{
@@ -147,14 +128,33 @@ response.setHeader ("Expires", "0"); //prevents caching at the proxy server
       }  
    
     
-    if((position.equals("Admin") || position.equals("Admin")) && (!email.equals("") || email!=null)){
-    
+    if((position.equals("Admin") || position.equals("Admin")) &&  email!=null){
         
     }else{
     response.sendRedirect("index.jsp");
     }   
     }
-    %> 
+    %>  
+    
+     <script>
+      window.onload=function(){checkdate();}  
+    function checkdate(){
+     var date=new Date();
+     var day=date.getDate();  
+     var month=date.getMonth()+1;  
+     var year=date.getFullYear();  
+     day=checkTime(day);  	
+     month=checkTime(month);  
+     document.getElementById("date").value=month+"/"+day+"/"+year;  
+     console.log(month+"/"+day+"/"+year);
+       
+   }
+    function checkTime(i){  
+	if (i<10){  
+	  i="0" + i;  
+	 }  
+	return i;} 
+  </script>
 <nav class="navbar navbar-light bg-light p-3">
   <div class="d-flex col-12 col-md-3 col-lg-2 mb-2 mb-lg-0 flex-wrap flex-md-nowrap justify-content-between">
       <a class="navbar-brand" href="#">
@@ -179,7 +179,7 @@ response.setHeader ("Expires", "0"); //prevents caching at the proxy server
       </div>
       <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-              Hello,<%=name %>
+              Hello, <%=name %>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -197,45 +197,9 @@ response.setHeader ("Expires", "0"); //prevents caching at the proxy server
 <div class="position-sticky pt-md-5">
   <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link " aria-current="page" href="Adminhome.jsp">
+        <a class="nav-link active" aria-current="page" href="dashboard.jsp">
           <i class="fa-solid fa-house mx-2"></i>
           <span class="ml-2">Dashboard</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" href="viewrequest.jsp">
-          <i class="fa-solid fa-landmark mx-2"></i>
-          <span class="ml-2">View Request</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="history.html">
-          <i class="fa-solid fa-clock-rotate-left mx-2"></i>
-          <span class="ml-2">History</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="accountinfo.html">
-          <i class="fa-solid fa-file-invoice-dollar mx-2"></i>
-          <span class="ml-2">Account Info</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="bio.html">
-          <i class="fa-solid fa-file-pen mx-2"></i>
-          <span class="ml-2">Update Bio</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="loan-status.jsp">
-          <i class="fa-solid fa-sack-dollar mx-2"></i>
-          <span class="ml-2">Loan Status</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="Advertisement.jsp">
-          <i class="fa-solid fa-file-invoice-dollar mx-2"></i>
-          <span class="ml-2">Advertise Loan</span>
         </a>
       </li>
     </ul>
@@ -250,52 +214,105 @@ response.setHeader ("Expires", "0"); //prevents caching at the proxy server
     <li class="breadcrumb-item active" aria-current="page">Overview</li>
   </ol>
 </nav>
-<h1 class="h2">View Request</h1>
+<h1 class="h2">Dashboard</h1>
 <p>This is the homepage of a simple admin interface</p>
     
 <div class="card">
-  <h5 class="card-header">Approved Loan</h5>
+  <h5 class="card-header">Loan Advertisement</h5>
   <div class="card-body">
-    <h5 class="card-title">25 Nos</h5>
-    <p class="card-text">Total worth: N550,000.00</p>
-    <p class="card-text text-success">At 8.2% rate daily</p>
+      <form action="LoanAds" method="post">
+          <label for="ads" class="form-label">Loan Amount</label>
+          <input class="form-control" type="text" placeholder="Loan Amount" id="adsAmount" name="adsAmount">
+          <input type="hidden" id="date" name="date">
+          <input type="hidden" id="adsID" name="adsID">
+          <input type="hidden" id="adsStatus" name="adsStatus" value="Pending">
+          <b id="report" class="text-danger"></b>
+          <button type="submit" class="btn btn-secondary">Post Ads</button>
+      </form>
   </div>
 </div>
   
-
-
     
 <div class="row">
-  <div class="col-12 col-xl-12 mb-4 mb-lg-0">
+  <div class="row">
+  <div class="col-12 col-xl-8 mb-4 mb-lg-0">
       <div class="card">
-          <h5 class="card-header">Pending loan requests</h5>
+          <h2 class="card-header">Ads History</h2>
           <div class="card-body">
               <div class="table-responsive">
-                  <table class="table table-primary  table-bordered text-center">
-                      <thead>
-                        <tr>
-                          <th >Tran.ID</th>
-                          <th >Col.Name</th>
-                          <th >Col.ID</th>
-                          <th >Trans.Date</th>
-                          <th >Trans.Time</th>
-                          <th ></th>
-                         </tr>
-                         <%
-                           List<LoanRequest> lr=data.Database.getviewRequest("pending");
-                           for(LoanRequest l:lr){
-                          out.println("<tr><td>"+l.getTrid()+"</td><td>"+l.getColname()+"</td><td>"+l.getColid()+"</td><td>"+l.getDate()+"</td><td>"+l.getTime()+"</td><td><form action='View.jsp' method='post'><input type='hidden' name='v' value='"+l.getTrid()+"'><button class='btn btn-primary' onclick='dp();'><small id='e'>View</small><small id='d' style='display:none;'><span class='spinner-border spinner-border-sm' id='c' style='display:none;'></span>loading</small></button></form></td></tr>");     
-                           }
-                         
-                         %>  
-                  </table>
+                  <table id="invesment-history" class="table" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Amount</th>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Package</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                    List <Ads> loanAds = data.Database.GetLoanAds();
+                                    for(Ads ads: loanAds){
+                                        out.println("<tr>");
+                                            out.println("<td>"+ads.getAdsAmount()+"</td>");
+                                            out.println("<td>"+ads.getAdsID()+"</td>");
+                                            out.println("<td>"+ads.getDate()+"</td>");
+                                            out.println("<td>"+ads.getAdsPackage()+"</td>");
+                                            out.println("<td>"+ads.getAdsStatus()+"</td>");
+                                        out.println("</tr>");
+                                    }
+                                %>
+                        </tbody>
+                        </table>
               </div>
-                <a href="#" class="btn btn-block btn-light">View all</a>
           </div>
       </div>
   </div>
 
+<div class="col-12 col-xl-4">
+       
+<div class="card">
+  <h5 class="card-header">Transaction History</h5>
+  <div class="card-body">
+  <div class="table-responsive">
+      <div class="row">
+          <div class="col-sm-2"></div>
+           <div class="col-sm-8">
+     <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+           </div>
+       <div class="col-sm-2"></div>
+	</div>
+  </div>
+<script>
+    var a=20000;
+    var b=18000;
+    var c=2000;
+    var f=200000;
+var xValues = ["Investment","Interest", "Profit", "Bonus"];
+var yValues = [f,a, b, c];
+var barColors = ["teal","green", "orange","gold"];
 
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Transaction Analysis"
+    }
+  }
+});
+</script>
+
+  </div>
 </div>
 </div>
 </div>
@@ -314,18 +331,17 @@ response.setHeader ("Expires", "0"); //prevents caching at the proxy server
       </li>
     </ul>
 </footer>
-  
-
-
       </main>
   </div>
-</div>
-</div>
-  
-
-
-
-  
+<!--table pagination js.min cdn-->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<!--table pagination initialization-->
+<script type="text/javascript">
+    $(document).ready(function () {
+    $('#invesment-history').DataTable();
+});
+</script>
 </body>
-</html>
-  
+</html>  

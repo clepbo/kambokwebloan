@@ -152,6 +152,18 @@
         <servlet-name>DebitClient</servlet-name>
         <servlet-class>Admin.DebitClient</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SaveInvestInfo</servlet-name>
+        <servlet-class>Investor.SaveInvestInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetInvestInfo</servlet-name>
+        <servlet-class>Investor.GetInvestInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoanAds</servlet-name>
+        <servlet-class>Admin.LoanAds</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Adduser</servlet-name>
         <url-pattern>/Adduser</url-pattern>
@@ -315,6 +327,18 @@
     <servlet-mapping>
         <servlet-name>DebitClient</servlet-name>
         <url-pattern>/DebitClient</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveInvestInfo</servlet-name>
+        <url-pattern>/SaveInvestInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetInvestInfo</servlet-name>
+        <url-pattern>/GetInvestInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoanAds</servlet-name>
+        <url-pattern>/LoanAds</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
