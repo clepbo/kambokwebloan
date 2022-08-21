@@ -44,6 +44,65 @@ import model.Wallet;
 import org.apache.commons.fileupload.FileItem;
 
 public class Database {
+static String name="com.mysql.jdbc.Driver";
+static String url="jdbc:mysql://localhost:3306/onedrive";
+static String username="root";
+static String password="kambok123";
+static float total=0;
+static float  deposit=0;
+static float  balance=0;
+
+public static Connection myconnection(){
+    Connection con=null;
+try{
+	Class.forName(name).newInstance();
+   con=DriverManager.getConnection(url,username,password);
+   
+}catch(Exception e){
+System.out.println(e);}
+
+	return con;
+}
+   
+public static int clientusers(Users us){
+    int i=0;
+    try{
+ Connection con=myconnection();
+ String sql="insert into onedrive.register values (?,?,?,?,?)";
+String sql2="insert into onedrive.login values(?,?)";
+ String sql3="insert into onedrive.position values(?,?)";
+ PreparedStatement prst=con.prepareStatement(sql2);
+ prst.setString(1,us.getEmail());
+ prst.setString(2, us.getPassword());
+  PreparedStatement prst2=con.prepareStatement(sql3);
+  prst2.setString(1, us.getEmail());
+  prst2.setString(2, us.getPosition());
+          
+ PreparedStatement user=con.prepareStatement(sql);
+user.setString(1, us.getFirstname());
+user.setString(2, us.getLastname());
+user.setString(3, us.getPhone());
+user.setString(4, us.getPassword());
+user.setString(5, us.getEmail());
+
+ i=user.executeUpdate();
+ i+=prst.executeUpdate();
+ i+=prst2.executeUpdate();
+ 
+ String urll="insert into onedrive.wallet values(?,?,?,?,?)";
+ PreparedStatement wallet=con.prepareStatement(urll);
+ wallet.setString(1, us.getEmail());
+ wallet.setLong(2, Long.parseLong(VerificationCodegenerator.generatewallet()));
+ wallet.setDouble(3,0.0);
+ wallet.setDouble(4,0.0);
+ wallet.setDouble(5,0.0);
+ wallet.executeUpdate();
+ 
+    }catch(Exception e){
+        e.printStackTrace();
+    }
+    return i;
+}
 
     static String name = "com.mysql.jdbc.Driver";
     static String url = "jdbc:mysql://localhost:3306/onedrive";
@@ -2025,6 +2084,7 @@ public class Database {
         return us;
     }
 
+
 //sendpayment section
     public static int saveSendPayment(MakePayment mk) {
         int i = 0;
@@ -2388,4 +2448,22 @@ public class Database {
         return id;
     }
 
+public static int Investment(Investment invest){
+    int i=0;
+    
+    try{
+       Connection con=myconnection();
+       String sql = "insert into onedrive.investment values (?,?,?,?,?,?)";
+       PreparedStatement ps = con.prepareStatement(sql);
+       ps.setString(1, invest.getEmail());
+       ps.setString(2, invest.getInvestAmt());
+       ps.setString(3, invest.getDate());
+       ps.setString(4, invest.getAdsID());
+       ps.setString(5, invest.getAdsPackage());
+       ps.setString(6, invest.getInvestId());
+       
+       i = ps.executeUpdate();
+    }catch(Exception e){}
+    return i;
+}
 }
